@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS default.queries_from_hs2_logs;
 
 CREATE EXTERNAL TABLE default.queries_from_hs2_logs (
+    hs2_instance string,
     username STRING,
     tstamp BIGINT,
     duration BIGINT,
