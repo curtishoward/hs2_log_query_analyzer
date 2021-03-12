@@ -35,9 +35,7 @@ def filter_control(d):
             fd[k] = v
     return fd
 
-file_handle = open('new_output.txt', 'r')
-lines = file_handle.readlines()
-for line in lines:
+for line in sys.stdin:
     f = line.split('\t')
     reads_od = OrderedDict()
     writes_od = OrderedDict()
