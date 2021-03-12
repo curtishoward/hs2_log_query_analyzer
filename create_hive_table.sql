@@ -17,3 +17,31 @@ FIELDS TERMINATED BY '\t'
 COLLECTION ITEMS TERMINATED BY '#'
 STORED AS TEXTFILE
 LOCATION '/hdfs/path/to/query_data/';
+
+
+drop table if exists default.hs2_grouped_data_raw;
+create external table default.hs2_grouped_data_raw (
+query_first_100_chars string,
+hs2_instance string,
+duration_min bigint,
+duration_mean bigint,
+duration_max bigint,
+duration_total bigint,
+occurences int,
+hive_mr_jobs int,
+engine string,
+unique_read_table_count int,
+unique_write_table_count int,
+read_tables string,
+write_tables string,
+control_tables_used_flag int,
+control_read_tables string,
+control_write_tables string
+)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY '\t'
+stored as textfile
+location '/hdfs/path/to/grouped_data';
+
+drop table if exists hs2_grouped_data; 
+create table hs2_grouped_data stored as parquet as select * from hs2_grouped_data_raw;
