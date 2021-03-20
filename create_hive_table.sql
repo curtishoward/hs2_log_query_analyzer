@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS default.queries_from_hs2_logs;
+DROP TABLE IF EXISTS default.queries_from_hs2_logs_raw;
 
-CREATE EXTERNAL TABLE default.queries_from_hs2_logs (
+CREATE EXTERNAL TABLE default.queries_from_hs2_logs_raw (
     hs2_instance string,
     username STRING,
     tstamp BIGINT,
@@ -17,6 +17,9 @@ FIELDS TERMINATED BY '\t'
 COLLECTION ITEMS TERMINATED BY '#'
 STORED AS TEXTFILE
 LOCATION '/hdfs/path/to/query_data/';
+
+drop table if exists default.queries_from_hs2_logs; 
+create table default.queries_from_hs2_logs stored as parquet as select * from default.queries_from_hs2_logs_raw;
 
 
 drop table if exists default.hs2_grouped_data_raw;
@@ -43,5 +46,22 @@ FIELDS TERMINATED BY '\t'
 stored as textfile
 location '/hdfs/path/to/grouped_data';
 
-drop table if exists hs2_grouped_data; 
-create table hs2_grouped_data stored as parquet as select * from hs2_grouped_data_raw;
+drop table if exists default.hs2_grouped_data; 
+create table default.hs2_grouped_data stored as parquet as select * from default.hs2_grouped_data_raw;
+
+
+drop table if exists default.hs2_table_access_raw;
+create external table default.hs2_table_access_raw (
+read_or_write string,
+table_name string,
+job_duration_weighted_query_references float,
+num_query_references int
+)
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY '\t'
+stored as textfile
+location '/hdfs/path/to/table_access_data';
+
+drop table if exists default.hs2_table_access; 
+create table default.hs2_table_access stored as parquet as select * from default.hs2_table_access_raw;
+
