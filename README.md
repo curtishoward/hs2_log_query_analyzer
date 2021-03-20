@@ -6,5 +6,7 @@ Crude script to extract basic Hive query metadata from HS2 logs
 2.  Group the data (e.g. by first 100 queryText character pattern):
 ```cat query_data.tsv | python parse_queries.py > grouped_data.tsv```
 ```hdfs dfs -put grouped_data.tsv /hdfs/path/to/grouped_data/```
-3.  Define the Hive tables:<br/>
+3.  Group table accesses:
+4.  ```cat query_data.tsv | python tables.py > tables.tsv```
+5.  Define the Hive tables:<br/>
 ```hive -f create_hive_table.sql```
